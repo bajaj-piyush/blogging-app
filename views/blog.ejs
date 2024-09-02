@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog</title>
+    <%- include("./partials/head") %>
+    <style>
+     
+      body {
+        background-image: linear-gradient(to bottom, #e9ebe5, #dce2de, #d1d8d7, #c8cdcf, #c1c3c6);
+      }
+      .container {
+    max-width: 80vw; /* Set maximum width for the container */
+    height:fit-content;
+    margin: 0 auto; /* Center the container */
+    padding: 25px; /* Add padding around the container */
+    background-color: #c8c7c7; /* Light background color */
+    
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.blog-post {
+    margin-bottom: 30px; /* Space between blog posts */
+    padding: 20px; /* Padding within each blog post */
+    background-color: #fdfdfd; /* White background for posts */
+    border-radius: 5px; /* Slightly rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for posts */
+}
+
+.blog-title {
+    font-size: 24px; /* Font size for the title */
+    color: #333; /* Dark color for text */
+    margin-bottom: 15px; /* Space below the title */
+}
+
+.blog-image {
+    width: 100%; /* Make the image responsive */
+    border-radius: 4px; /* Rounded corners for images */
+    margin-bottom: 15px; /* Space below the image */
+}
+
+.blog-body {
+   
+    font-size: 16px; /* Font size for body text */
+    line-height: 1.6; /* Increase line height for readability */
+    color: #555; /* Lighter color for body text */
+    
+            white-space: pre-wrap; /* Preserve whitespace and wrap text */
+            word-wrap: break-word; /* Break long words if necessary */
+            overflow-wrap: break-word; /* Ensure long words break to the next line */
+        
+}
+    </style>
+  </head>
+  <body>
+    <%- include("./partials/navbar") %>
+    <div class="container my-3">
+        <div class="blog-post">
+            <h2 class="blog-title text-center my-1"><%= blog.title %></h2>
+            <img src="../<%= blog.coverImageUrl %>"  style="height:400px"alt="Mindful Living" class="blog-image mt-2 ">
+            <pre class="blog-body my-1">
+                <%= blog.body %>
+            </pre>
+            <p>  <b>Created By: <%= blog.createdBy.name %> </b></p>
+            <img class ="mx-2"src="<%= blog.createdBy.profileImageUrl %>" alt="Profile image" width="100px" height="80px">
+        </div>
+        <% if (locals.user) { %>
+          <h3>Comments(<%= comments.length %>)</h3>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end inline">
+      <form class="form-inline" action="/blog/comment/<%= blog._id %>" method="post" style="width: 100%;">
+          <div class="form-group d-flex">
+              <input type="text" name="content" class="form-control mr-2 mx-1" placeholder="Enter your comment here" required>
+              <button class="btn btn-primary mx-1" type="submit">Add</button>
+          </div>
+      </form>
+  </div>
+  
+        <% comments.forEach(comment => { %>
+          <div class="card mt-2" body-bs-style="dark" data-bs-theme="light" style="width: 94%;height: 80px;">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div class="flex-grow-1">
+                    <p class="card-text mb-0"><%=comment.content%></p>
+                </div>
+                <div class="d-flex align-items-center">
+                    <h5 class="card-title text-muted mb-0 me-2">&rarr; <%= comment.createdBy.name %></h5>
+                    <img src="<%= comment.createdBy.profileImageUrl %>" alt="Profile Image" class="rounded-circle" style="height: 50px; width: 50px;">
+                </div>
+            </div>
+        </div>
+        
+        <% }) %>
+        <% } %>
+      </div>
+        
+ 
+
+  </body>
+  <%- include("./partials/scripts") %>
+</html>
